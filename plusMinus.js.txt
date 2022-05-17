@@ -1,0 +1,50 @@
+/*Given an array of integers, calculate the ratios of its elements that are positive, negative, and zero. 
+Print the decimal value of each fraction on a new line with  places after the decimal.
+
+Note: This challenge introduces precision problems. The test cases are scaled to six decimal places, 
+though answers with absolute error of up to  are acceptable.*/
+
+//Declare and initialize map to hold the quantity of values in array.
+const numberTypeMap = new Map([["positive", 0], ["negative", 0], ["zeros", 0]]);
+
+function plusMinus(arr) {
+    // Write your code here
+    
+    //Loop through array and asign the quantity of the values to each key in the map.
+    for (const number of arr) {
+        if (number > 0) {
+            let newValue = numberTypeMap.get("positive");
+            newValue += 1;
+            numberTypeMap.set("positive", newValue);
+        }
+        
+        if (number < 0) {
+            let newValue = numberTypeMap.get("negative");
+            newValue += 1;
+            numberTypeMap.set("negative", newValue);
+        }
+        
+        if (number === 0) {
+            let newValue = numberTypeMap.get("zeros");
+            newValue += 1;
+            numberTypeMap.set("zeros", newValue);
+        }
+    }
+    
+    let totalItemsInArray = arr.length;
+
+    //Get the total items in each map key
+    const totalPositive = numberTypeMap.get("positive");
+    const totalNegative = numberTypeMap.get("negative");
+    const totalZeros = numberTypeMap.get("zeros");
+    
+    /*Console log the division between the totals by the number of items in array 
+    to get the proportions of occurrence*/
+    let positiveOccurrence = (totalPositive / totalItemsInArray).toFixed(6);
+    let negativeOccurrence = (totalNegative / totalItemsInArray).toFixed(6);
+    let zerosOccurrence = (totalZeros / totalItemsInArray).toFixed(6);
+    
+    console.log(positiveOccurrence);
+    console.log(negativeOccurrence);
+    console.log(zerosOccurrence); 
+}
