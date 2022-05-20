@@ -1,0 +1,186 @@
+/* Camel Case is a naming style common in many programming languages. In Java, method and variable names 
+typically start with a lowercase letter, with all subsequent words starting with a capital letter 
+(example: startThread). Names of classes follow the same pattern, except that they start with a capital
+letter (example: BlueCar).
+
+Your task is to write a program that creates or splits Camel Case variable, method, and class names.
+
+Input Format
+
+Each line of the input file will begin with an operation (S or C) followed by a semi-colon followed by M, C, or V 
+followed by a semi-colon followed by the words you'll need to operate on.
+The operation will either be S (split) or C (combine)
+M indicates method, C indicates class, and V indicates variable
+In the case of a split operation, the words will be a camel case method, class or variable name that you need to 
+split into a space-delimited list of words starting with a lowercase letter.
+In the case of a combine operation, the words will be a space-delimited list of words starting with lowercase letters 
+that you need to combine into the appropriate camel case String. Methods should end with an empty set of parentheses 
+to differentiate them from variable names.
+Output Format
+
+For each input line, your program should print either the space-delimited list of words (in the case of a split 
+operation) or the appropriate camel case string (in the case of a combine operation).
+Sample Input
+
+S;M;plasticCup()
+
+C;V;mobile phone
+
+C;C;coffee machine
+
+S;C;LargeSoftwareBook
+
+C;M;white sheet of paper
+
+S;V;pictureFrame
+
+Sample Output
+
+plastic cup
+
+mobilePhone
+
+CoffeeMachine
+
+large software book
+
+whiteSheetOfPaper()
+
+picture frame */
+
+
+function processData(input) {
+    //Enter your code here
+    //Convert input to array so we can work on each sentence separately.
+    const stringsArray = input.split("\r\n");
+    //Loop between strings
+    for (string of stringsArray) {
+        //Remove parameters from text
+        let text = string.slice(4);
+        //First letter of sentence indicates Split or Combine. Third letter indicates Class, Method or Variable.
+        //Split
+        if(string[0] === 'S') {
+            //If class
+            if(string[2] === 'C') {
+                //console.log("Split a class");
+                split(null, text);  
+            }
+            
+            //If method
+            if(string[2] === 'M') {
+                //console.log("Split a method");
+                split('M', text);
+            }
+            
+            //If variable
+            if(string[2] === 'V') {
+                //console.log("Split a variable");
+                split(null, text);
+            }
+        }
+        
+        //Combine
+        if(string[0] === 'C') {
+            //If class
+            if (string[2] === 'C'){
+                //console.log("Combine a class");
+                combine('C', text);
+            }
+            
+            //If method
+            if (string[2] === 'M'){
+                //console.log("Combine a method");
+                combine('M', text);
+            }   
+            
+            //If variable
+            if(string[2] === 'V') {
+                //console.log("Combine a variable");
+                combine('V', text);
+            }
+        } 
+    }
+} 
+
+function split(parameter, text) {
+    	let newFullText = "", subsequentLetter; 
+        let x = 0;//x will establish the start index of the string.
+        //If 1st letter is upper case put it lower case.
+        if(text[0] == text[0].toUpperCase()) {
+            newFullText = newFullText.concat(text[0].toLowerCase()); 
+            x = 1;
+        }
+        let x2 = x; //x2 will establish the end index of the string.
+        //Remove upper case and create a space after 2nd upper case found.
+        for (i = x; i < text.length; i++) {
+            //Check with regular expresion to validate only upper case letters.
+            if(text[i] == text[i].toUpperCase() && /[A-Z]/.test(text[i])) {
+                 
+                //Convert to lower case the subsequent letter found.
+                subsequentLetter = text[i].toLowerCase();
+                newFullText = newFullText.concat(text.substring(x, x2), " ", subsequentLetter);
+               
+                x = x2 + 1;/*x will be the index of the next portion of text to 
+                concat. We add an extra 1 to x as the first letter of the next word is already concatenated, hence 
+		the next starting index will need to be in the next letter after the upper found*/
+            }
+            x2++;     
+        }
+        
+        /*Concatenate final portion of text as there wont 
+        be any more upper cases.*/
+        
+        newFullText = newFullText.concat(text.substring(x, x2));
+        
+        //If method, remove parenthesis.
+        if (parameter === 'M') {
+            let parenthesis = newFullText.length - 2;
+            newFullText = newFullText.slice(0, parenthesis);
+        }
+        console.log(newFullText);
+}
+
+function combine(parameter, text){
+    let newFullText = "", firstLetter = text[0];
+    //Make first letters upper case if class or lower if method or variable.
+    if (parameter === 'C'){
+        firstLetter = text[0].toUpperCase();
+    }else if(parameter === 'M' || parameter === 'V') {
+        firstLetter = text[0].toLowerCase();
+    }
+    //Count spaces to determine wheter there is only 1 word.
+    let countSpaces = 0;
+    //Remove spaces and combine.
+    for (i = 0; i < text.length; i++) {
+        if(text[i] === " ") {
+            countSpaces++;
+            let subsequentLetterToUpper = text[i + 1].toUpperCase();
+            text = firstLetter.concat(text.slice(1, i), " ", subsequentLetterToUpper,              text.slice(i + 2, text.length));
+        }
+    }
+    
+    //If no spaces and it is a class and only 1 word was passed.
+    if(countSpaces === 0 && parameter === 'C'){
+        text = firstLetter.concat(text.slice(1, text.length));
+    }
+    
+    //Remove white space with regular expresion. \s fins white spaces, 'g' looks the entire string.
+    newFullText = text.replace(/\s/g, "");
+    //If method, put parenthesis at the end.
+    if(parameter === 'M') {
+        newFullText = newFullText.concat('()');
+    }
+    console.log(newFullText);
+}
+
+
+process.stdin.resume();
+process.stdin.setEncoding("ascii");
+_input = "";
+process.stdin.on("data", function (input) {
+    _input += input;
+});
+
+process.stdin.on("end", function () {
+   processData(_input);
+});
