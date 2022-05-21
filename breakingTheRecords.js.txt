@@ -27,7 +27,7 @@ int[2]: An array with the numbers of times she broke her records. Index  is for 
 Input Format
 
 The first line contains an integer , the number of games.
-The second line contains  space-separated integers describing the respective values of .
+The second line contains  space-separated integers describing the respective values of score 0 score 1... score n.
 
 */
 
