@@ -29,8 +29,6 @@ Input Format
 The first line contains an integer , the number of games.
 The second line contains  space-separated integers describing the respective values of .
 
-Constraints
-
 */
 
 
