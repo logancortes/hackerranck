@@ -1,0 +1,76 @@
+/* Maria plays college basketball and wants to go pro. Each season she maintains a record of her play. She tabulates the number of times she breaks her season record for 
+most points and least points in a game. Points scored in the first game establish her record for the season, and she begins counting from there.
+
+Example
+
+Scores are in the same order as the games played. She tabulates her results as follows:
+
+                                     Count
+    Game  Score  Minimum  Maximum   Min Max
+     0      12     12       12       0   0
+     1      24     12       24       0   1
+     2      10     10       24       1   1
+     3      24     10       24       1   1 */
+
+/*Given the scores for a season, determine the number of times Maria breaks her records for most and least points scored during the season.
+
+Function Description
+
+Complete the breakingRecords function in the editor below.
+
+breakingRecords has the following parameter(s):
+
+int scores[n]: points scored per game
+Returns
+
+int[2]: An array with the numbers of times she broke her records. Index  is for breaking most points records, and index  is for breaking least points records.
+Input Format
+
+The first line contains an integer , the number of games.
+The second line contains  space-separated integers describing the respective values of .
+
+Constraints
+
+*/
+
+
+
+function breakingRecords(scores) {
+    // Write your code here
+    //Delete duplicates from array using a Set.
+    const scoresSet = new Set(scores);
+    
+    //Copy back the unique values to scores
+    scores = Array.from(scoresSet);
+    
+    /*Store the first game score in a constant to compare with other values*/
+    let maxGameScore = scores[0];
+    let minGameScore = scores[0];
+    
+    /*Delete first element of array as it is already stored in a constant.*/
+    scores.shift();
+    
+    const brokeRecordCount = [0, 0];
+    let maxCount = brokeRecordCount[0];
+    let minCount = brokeRecordCount[1];
+    /*Iterate over array and compare values with first game score.*/
+    for (const number of scores) {
+        if(number > maxGameScore) {
+            //Update max score
+            maxGameScore = number;
+            
+            //Update count
+            maxCount = maxCount + 1; 
+        } 
+        
+        if (number < minGameScore) {
+            //Update minscore
+            minGameScore = number;
+            //Update count
+            minCount = minCount + 1; 
+        }
+    }
+    
+    console.log(maxCount + " " + minCount);
+    return maxCount, minCount;
+}
